@@ -1,16 +1,21 @@
+import Arweave from 'arweave/web/common';
 import { JWKInterface } from 'arweave/node/lib/wallet';
 import { isString } from 'lodash';
-
-import { ArweaveTransactionID } from '../../types';
 import { ArweaveWalletConnector } from '../../types';
 
 // A lot to do here, r.e. security, we will likely move to a different approach.
 export class JsonWalletConnector implements ArweaveWalletConnector {
   private _walletFile;
-  private _wallet?: JWKInterface;
+  private _wallet?: JWKInterface; // eslint-disable-line
+  private _arweave;
 
   constructor(file: any) {
     this._walletFile = file;
+    this._arweave = Arweave.init({
+      host:'arweave.net',
+      port:443,
+      protocol:'https'
+    })
   }
 
   async connect(): Promise<void> {
@@ -52,7 +57,18 @@ export class JsonWalletConnector implements ArweaveWalletConnector {
     this._walletFile = undefined;
   }
 
-  async getWalletAddress(): Promise<ArweaveTransactionID> {
-    throw Error('Not implemented!');
+  async getWalletAddress(): Promise<string> {
+    try {
+      const address = this._arweave.wallets.getAddress(this._wallet)
+      if (!address) {
+        throw new Error("Unable to get address")
+      }
+      return (address)
+      
+    } catch (error) {
+      console.error(error)
+      return ""
+    }
+    
   }
 }

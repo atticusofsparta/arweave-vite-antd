@@ -20,7 +20,7 @@ export default defineConfig({
   },
   // required for warp-contracts
   optimizeDeps: {
-    exclude: ['vm2', 'node'],
+    exclude: ['vm2'],
   },
   build:{
     sourcemap:true,

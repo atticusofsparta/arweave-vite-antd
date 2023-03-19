@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 import { useWalletAddress } from '../../../hooks';
-import { ArConnectWalletConnector } from '../../../services/wallets';
+import { ArConnectWalletConnector, ArweaveDotAppConnector, JsonWalletConnector } from '../../../services/wallets';
 import { useGlobalState } from '../../../state/contexts/GlobalState';
 import { ArweaveWalletConnector } from '../../../types';
 import { ArConnectIcon, ArweaveAppIcon, CloseIcon } from '../../icons';
@@ -62,7 +63,7 @@ function ConnectWalletModal({ show }: { show: boolean }): JSX.Element {
       <div className="connect-wallet-modal">
         <p
           className="section-header"
-          style={{ marginBottom: '1em', fontFamily: 'Rubik-Bold' }}
+          style={{ marginBottom: '1em', color:'var(--text-white)' }}
         >
           Connect with an Arweave wallet
         </p>
@@ -83,22 +84,47 @@ function ConnectWalletModal({ show }: { show: boolean }): JSX.Element {
           />
           Connect via ArConnect
         </button>
-        <button className="wallet-connect-button h2">
+        <button className="wallet-connect-button h2" onClick={() => {
+            setGlobalWallet(new ArweaveDotAppConnector());
+          }}>
           <img className="external-icon" src={ArweaveAppIcon} alt="" />
-          <a
-            target="_blank"
-            href="https://ardrive.io/start"
-            style={{
-              color: 'inherit',
-              paddingLeft: '65px',
-              textDecoration: 'none',
-            }}
-            rel="noreferrer"
-            className="span-all flex-row left"
-          >
-            I need a wallet
-          </a>
+         Connect via Arweave.app
         </button>
+
+        <button className="wallet-connect-button h2">
+        <img className="external-icon" src={ArweaveAppIcon} alt="" />
+          Import your JSON keyfile
+          <label className="span-all">
+            <input
+              className="hidden"
+              type="file"
+              onChange={(e) =>
+                e.target?.files?.length &&
+                setGlobalWallet(new JsonWalletConnector(e.target.files[0]))
+              }
+            />
+          </label>
+        </button>
+       
+
+        
+         
+          <Link
+            target="_blank"
+            to="https://ardrive.io/start"
+            rel="noreferrer"
+            style={{
+              width:'100%'
+            }}
+          >
+            <button className="wallet-connect-button h2" style={{
+          justifyContent:'center',
+          textDecoration:"none"
+        }}>
+            I need a wallet
+          
+        </button>
+        </Link>
       </div>
     </div>
   ) : (
