@@ -1,5 +1,6 @@
 
 
+import ConnectButton from '../../inputs/buttons/ConnectButton/ConnectButton';
 import './styles.css';
 
 function NavBar() {
@@ -7,6 +8,7 @@ function NavBar() {
   return (
     <div className="flex-row flex-space-between">
       <div className="flex-row flex-left">
+        <ConnectButton />
       </div>
    
     </div>

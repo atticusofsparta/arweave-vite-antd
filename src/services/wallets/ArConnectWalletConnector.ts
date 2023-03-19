@@ -1,6 +1,5 @@
 import { PermissionType } from 'arconnect';
 
-import { ArweaveTransactionID } from '../../types';
 import { ArweaveWalletConnector } from '../../types';
 
 const ARCONNECT_WALLET_PERMISSIONS: PermissionType[] = [
@@ -36,9 +35,9 @@ export class ArConnectWalletConnector implements ArweaveWalletConnector {
     return this._wallet.disconnect();
   }
 
-  getWalletAddress(): Promise<ArweaveTransactionID> {
+  getWalletAddress(): Promise<string> {
     return this._wallet
       .getActiveAddress()
-      .then((res) => new ArweaveTransactionID(res));
+      .then((res) => res);
   }
 }

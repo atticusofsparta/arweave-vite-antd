@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 
 import { useGlobalState } from '../../state/contexts/GlobalState';
-import { ArweaveTransactionID } from '../../types';
 
 export default function useWalletAddress(): {
   wallet: any;
-  walletAddress: ArweaveTransactionID | undefined;
+  walletAddress: string | undefined;
 } {
   const [{ wallet, walletAddress }, dispatchGlobalState] = useGlobalState();
 
@@ -23,7 +22,7 @@ export default function useWalletAddress(): {
             // all good, update state
             dispatchGlobalState({
               type: 'setWalletAddress',
-              payload: new ArweaveTransactionID(address),
+              payload: address,
             });
           })
           .catch((error: Error) => {
@@ -51,7 +50,7 @@ export default function useWalletAddress(): {
 
     wallet
       .getWalletAddress()
-      .then((address: ArweaveTransactionID) => {
+      .then((address: string) => {
         dispatchGlobalState({
           type: 'setWalletAddress',
           payload: address,
